@@ -13,6 +13,9 @@ Before you start, ensure you have the following prerequisites installed on your 
 - Git
 - Node.js and npm (if your project requires them)
 - GitHub CLI
+
+### macOS Specific Requirements
+-HomeBrew to install GitHub CLI
   
 ### Operating System Compatibility
 
@@ -42,7 +45,9 @@ This script is designed to improve the efficiency of Git workflows, making it ea
 
 ## Installation
 
-### Step 1: Install the GitHub CLI
+### Windows Subsystem for Linux (WSL)
+
+#### Step 1: Install the GitHub CLI
 
 First, install the GitHub CLI (`gh`) if it's not already installed on your machine. Execute the following commands in your terminal:
 
@@ -53,7 +58,7 @@ sudo apt update
 sudo apt install gh
 ```
 
-### Step 2: Authenticate with GitHub
+#### Step 2: Authenticate with GitHub
 
 Authenticate with your GitHub account using `gh`:
 
@@ -63,11 +68,35 @@ gh auth login
 
 Follow the prompts to select your preferred authentication method and set the default git protocol.
 
-### Step 3: Download the Script
+### macOS Instructions
+
+#### Step 1: Install Homebrew (if not already installed)
+
+```sh
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+#### Step 2: Install GitHub CLI
+
+```sh
+brew install gh
+```
+
+#### Step 3: Authenticate with GitHub
+
+```sh
+gh auth login
+```
+
+Follow the prompts to select your preferred authentication method and set the default git protocol.
+
+### General Instructions for Both WSL and macOS
+
+#### Step 3: Download the Script
 
 Download `git_workflow.sh` to your machine. Place it in your home directory or one dedicated to scripts/utilities for easy access.
 
-### Step 4: Upgrade Permissions
+#### Step 4: Upgrade Permissions
 
 Ensure the script is executable by updating its permissions:
 
@@ -83,7 +112,7 @@ chmod +x git_workflow.sh
 
 Replace `/path/to/git_workflow.sh` with the actual file path.
 
-### Step 5: Add an Alias for the Script
+#### Step 5: Add an Alias for the Script
 
 Add an alias to your terminal's profile file to easily access the script:
 
