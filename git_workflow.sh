@@ -17,11 +17,13 @@ repo_url="" # Initialize an empty string to hold the repository URL
 
 # Function to confirm current directory
 confirm_directory() {
-    local current_dir_name=$(basename "$PWD")
-    local parent_dir_name=$(basename "$(dirname "$PWD")")
+    local current_dir_name
+    local parent_dir_name
+    current_dir_name=$(basename "$PWD")
+    parent_dir_name=$(basename "$(dirname "$PWD")")
     local prompt_message="Are you in the correct directory? ($parent_dir_name/$current_dir_name) (Yes/No): "
     
-    read -p "$prompt_message" confirm_dir
+    read -r -p "$prompt_message" confirm_dir
     if is_no "$confirm_dir"; then
         echo "Please navigate to the correct directory and restart the script."
         exit 1
@@ -35,19 +37,19 @@ confirm_directory() {
 confirm_directory
 
 # Ask if need to download a project
-read -p "Do you need to download a project? (Yes/No): " need_download
+read -r -p "Do you need to download a project? (Yes/No): " need_download
 if is_yes "$need_download"; then
     echo "-----------------------------------"
-    read -p "Would you like to use 'tiged' or 'clone' to download the project? (tiged/clone): " download_method
+    read -r -p "Would you like to use 'tiged' or 'clone' to download the project? (tiged/clone): " download_method
 
     if [[ "$download_method" == "tiged" ]]; then
-        read -p "Please enter the full 'npx tiged' command to download the project: " tig_command
+        read -r -p "Please enter the full 'npx tiged' command to download the project: " tig_command
         eval $tig_command # Using eval to execute the command as it's entered
         # Assuming the last argument is the directory name, which might not always be correct
         dir_name=$(echo $tig_command | awk '{print $NF}')
         cd "$dir_name" || { echo "Failed to change directory to $dir_name. Does it exist?"; exit 1; }
     elif [[ "$download_method" == "clone" ]]; then
-        read -p "Please enter the Git repository URL to clone: " git_clone_url
+        read -r -p "Please enter the Git repository URL to clone: " git_clone_url
         repo_name=$(basename -s .git "$git_clone_url")
         git clone "$git_clone_url"
         cd "$repo_name" || { echo "Failed to change directory to $repo_name. Does it exist?"; exit 1; }
@@ -65,7 +67,7 @@ fi
 
 
 # Ask if need to create a repo
-read -p "Do you need to create a repo? (Yes/No): " need_repo
+read -r -p "Do you need to create a repo? (Yes/No): " need_repo
 if is_yes "$need_repo"; then
     confirm_directory
     current_dir=${PWD##*/}
@@ -87,7 +89,7 @@ if [ ! -f .gitignore ]; then
     echo "No .gitignore file found. I've printed the contents of the directory below:"
     ls -a
     echo "-----------------------------------"
-    read -p "Would you like to add a .gitignore file? (Yes/No): " add_gitignore
+    read -r -p "Would you like to add a .gitignore file? (Yes/No): " add_gitignore
     if is_yes "$add_gitignore"; then
         echo "node_modules" > .gitignore
         echo ".gitignore file created and node_modules added."
@@ -99,7 +101,7 @@ fi
 if [ -d "node_modules" ]; then
     echo "The 'node_modules' directory already exists. Skipping installation."
 else
-    read -p "The 'node_modules' directory does not exist. Would you like to install node_modules? (Yes/No): " install_node
+    read -r -p "The 'node_modules' directory does not exist. Would you like to install node_modules? (Yes/No): " install_node
     if is_yes "$install_node"; then
         npm install
         echo "node_modules installed."
@@ -120,7 +122,7 @@ fi
 echo "-----------------------------------"
 
 # Asking if the user is ready to add files to staging
-read -p "Are you ready to add files to staging? (Yes/No): " ready_to_add
+read -r -p "Are you ready to add files to staging? (Yes/No): " ready_to_add
 if is_yes "$ready_to_add"; then
     git add . && echo "Added all files to staging."
 else
@@ -130,14 +132,14 @@ echo "-----------------------------------"
 
 # Asking if the user is ready to commit the changes & Commit changes with a message
 if is_yes "$ready_to_add"; then # Proceed if the user was ready to add
-    read -p "Are you ready to commit the changes? (Yes/No): " ready_to_commit
+    read -r -p "Are you ready to commit the changes? (Yes/No): " ready_to_commit
     if is_yes "$ready_to_commit"; then
-        read -p "Is the commit message 'Initial Commit'? (Yes/No - Can be entered in the next step): " initial_commit
+        read -r -p "Is the commit message 'Initial Commit'? (Yes/No - Can be entered in the next step): " initial_commit
         if is_yes "$initial_commit"; then
             git commit -m "Initial Commit" || { echo "Commit failed."; exit 1; }
             echo "Changes committed with the message: 'Initial Commit'"
         else
-            read -p "Enter your commit message: " commit_message
+            read -r -p "Enter your commit message: " commit_message
             git commit -m "$commit_message" || { echo "Commit failed."; exit 1; }
             echo "Changes committed with message: '$commit_message'"
         fi
@@ -157,7 +159,7 @@ echo "-----------------------------------"
 
 
 # Confirm if everything looks good
-read -p "Does everything above look good, I'm about to try pushing to the GitHub Repo? (Yes/No): " looks_good
+read -r -p "Does everything above look good, I'm about to try pushing to the GitHub Repo? (Yes/No): " looks_good
 if is_yes "$looks_good"; then
     echo "-----------------------------------"
     if ! git remote get-url origin &> /dev/null; then
@@ -166,16 +168,16 @@ if is_yes "$looks_good"; then
             git remote add origin "$repo_url"
             echo "Remote origin set to created repository URL."
         else
-            read -p "Enter remote origin URL: " remote_origin_url
+            read -r -p "Enter remote origin URL: " remote_origin_url
             git remote add origin "$remote_origin_url" && echo "Remote origin added."
         fi
     else
         # Remote origin exists, print it and ask the user if they want to change it
         existing_origin_url=$(git remote get-url origin)
         echo "The existing remote origin URL is: $existing_origin_url"
-        read -p "Would you like to keep the existing remote origin? (Yes/No): " keep_origin
+        read -r -p "Would you like to keep the existing remote origin? (Yes/No): " keep_origin
         if is_no "$keep_origin"; then
-            read -p "Enter new remote origin URL: " new_origin_url
+            read -r -p "Enter new remote origin URL: " new_origin_url
             git remote set-url origin "$new_origin_url"
             echo "Remote origin has been updated to $new_origin_url."
         else
