@@ -15,8 +15,9 @@ Before you start, ensure you have the following prerequisites installed on your 
 - GitHub CLI
 
 ### macOS Specific Requirements
+
 - HomeBrew to install GitHub CLI
-  
+
 ### Operating System Compatibility
 
 This script is designed to run on Unix-like operating systems with native Bash support, such as Linux and macOS. Windows users can run the script through the Windows Subsystem for Linux (WSL)
@@ -37,9 +38,9 @@ This script is designed to run on Unix-like operating systems with native Bash s
 
 ## Usage:
 
-Ensure you have Git, npm (Node Package Manager), and the GitHub CLI installed on your system before using the script. If you haven't set up the alias `gitwf` for the script, please refer to the installation instructions provided with this project for details on how to do so. This alias allows for easy access and execution of the script from anywhere in your terminal.
+Ensure you have Git, npm (Node Package Manager), and the GitHub CLI installed on your system before using the script. If you haven't set up an alias for the script such as `gitwf` , please refer to the installation instructions provided with this project for details on how to do so. This alias allows for easy access and execution of the script from anywhere in your terminal.
 
-To use the script, simply type `gitwf` or the alias you setup into your terminal and press Enter while in the directory you would like your project to be downloaded or the directory of the project you want to run the above-mentioned functions on. Follow the interactive prompts to navigate through various Git and project setup tasks, such as confirming the current directory, downloading a project, creating a repository, managing `.gitignore`, installing node modules, initializing Git, staging and committing changes, and managing remote origins.
+To use the script, simply type `gitwf` or the alias you setup into your terminal and press Enter while in the directory you would like your project to be downloaded or the directory of the project you want to run some of the above-mentioned functions on. Follow the interactive prompts to navigate through various Git and project setup tasks, such as confirming the current directory, downloading a project, creating a repository, managing `.gitignore`, installing node modules, initializing Git, staging and committing changes, and managing remote origins.
 
 This script is designed to improve the efficiency of Git workflows, making it easier for developers to manage their version control tasks and project setups this may not be a perfect fit for your use case, so if you have any suggestion for improvements feel free to submit a issue or pull request. I would to expand the functionality of this script.
 
@@ -92,29 +93,31 @@ Follow the prompts to select your preferred authentication method and set the de
 
 ### General Instructions for Both WSL and macOS
 
-#### Step 3: Download the Script
+#### Step 3: Obtain a Copy of the Repository
 
-Download `git_workflow.sh` to your machine. Place it in your home directory or one dedicated to scripts/utilities for easy access.
+To keep your local copy of the project easily updatable as changes are made, we recommend using `git clone` to download the repository:
 
-#### Step 4: Upgrade Permissions
+```sh
+git clone https://github.com/PixelHabits/git-workflow-automation.git
+```
 
-Ensure the script is executable by updating its permissions:
+This command will create a new directory named `git-workflow-automation` that contains the entire project, including the `git_workflow.sh` script.
+
+#### Step 4: Ensure Script Executability
+
+After cloning the repository, ensure the `git_workflow.sh` script is executable by updating its permissions:
 
 ```sh
 chmod +x /path/to/git_workflow.sh
 ```
 
-For example, if placed in home directory as suggested the command would be:
+**Tip for macOS users:** To easily find the path of a file or directory, you can drag and drop the file into the Terminal window.
 
-```sh
-chmod +x git_workflow.sh
-```
-
-Replace `/path/to/git_workflow.sh` with the actual file path.
+**Reminder:** Replace `/path/to/git_workflow.sh` with the actual path to the script, which would typically be within the `git-workflow-automation` directory you've just cloned.
 
 #### Step 5: Add an Alias for the Script
 
-Add an alias to your terminal's profile file to easily access the script:
+To easily run the `git_workflow.sh` script from anywhere in your terminal, add an alias to your terminal's profile file:
 
 For Bash users:
 
@@ -123,6 +126,10 @@ echo "alias gitwf='bash /path/to/git_workflow.sh'" >> ~/.bashrc
 source ~/.bashrc
 ```
 
+**Reminder:** Ensure you replace `/path/to/git_workflow.sh` with the actual full path to where you've placed the script in the `git-workflow-automation` directory.
+
+**Note:** The alias `gitwf` in the command above can be changed to whatever you prefer, as long as it does not conflict with existing terminal commands.
+
 For Zsh (macOS) users:
 
 ```sh
@@ -130,7 +137,24 @@ echo "alias gitwf='bash /path/to/git_workflow.sh'" >> ~/.zshrc
 source ~/.zshrc
 ```
 
-Replace `/path/to/git_workflow.sh` with the actual path to the script.
+**Tip for macOS users:** To easily find the path of a file or directory, you can drag and drop the file into the Terminal window.
+
+**Reminder:** Ensure you replace `/path/to/git_workflow.sh` with the actual full path to where you've placed the script in the `git-workflow-automation` directory.
+
+**Note:** The alias `gitwf` in the command above can be changed to whatever you prefer, as long as it does not conflict with existing terminal commands.
+
+#### Updating Your Local Copy
+
+To update your local copy with the latest changes from the repository, navigate to the directory that contains the `git_workflow.sh` script and execute:
+
+```sh
+cd /path/to/git-workflow-automation
+git pull
+```
+
+**Reminder:** Replace `/path/to/git-workflow-automation` with the actual path to the directory. This step ensures you're in the correct location to update your local repository with any new changes.
+
+**Tip for macOS users:** To easily find the path of a file or directory, you can drag and drop the file into the Terminal window.
 
 ## Contributing
 
