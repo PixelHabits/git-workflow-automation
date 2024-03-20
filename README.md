@@ -15,7 +15,7 @@ Before you start, ensure you have the following prerequisites installed on your 
 - GitHub CLI
 
 ### macOS Specific Requirements
--HomeBrew to install GitHub CLI
+- HomeBrew to install GitHub CLI
   
 ### Operating System Compatibility
 
@@ -116,15 +116,21 @@ Replace `/path/to/git_workflow.sh` with the actual file path.
 
 Add an alias to your terminal's profile file to easily access the script:
 
+For Bash users:
+
 ```sh
 echo "alias gitwf='bash /path/to/git_workflow.sh'" >> ~/.bashrc
-```
-
-Adjust the path accordingly and then apply the changes:
-
-```sh
 source ~/.bashrc
 ```
+
+For Zsh (macOS) users:
+
+```sh
+echo "alias gitwf='bash /path/to/git_workflow.sh'" >> ~/.zshrc
+source ~/.zshrc
+```
+
+Replace `/path/to/git_workflow.sh` with the actual path to the script.
 
 ## Contributing
 
