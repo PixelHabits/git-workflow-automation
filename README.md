@@ -42,7 +42,7 @@ Ensure you have Git, npm (Node Package Manager), and the GitHub CLI installed on
 
 To use the script, simply type `gitwf` or the alias you setup into your terminal and press Enter while in the directory you would like your project to be downloaded or the directory of the project you want to run some of the above-mentioned functions on. Follow the interactive prompts to navigate through various Git and project setup tasks, such as confirming the current directory, downloading a project, creating a repository, managing `.gitignore`, installing node modules, initializing Git, staging and committing changes, and managing remote origins.
 
-This script is designed to improve the efficiency of Git workflows, making it easier for developers to manage their version control tasks and project setups this may not be a perfect fit for your use case, so if you have any suggestion for improvements feel free to submit a issue or pull request. I would to expand the functionality of this script.
+This script is designed to improve the efficiency of Git workflows, making it easier for developers to manage their version control tasks and project setups this may not be a perfect fit for your use case, so if you have any suggestion for improvements feel free to submit a issue, pull request and/or start a discussion. I would love to expand the functionality of this script.
 
 ## Installation
 
