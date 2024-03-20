@@ -24,7 +24,7 @@ This script is designed to run on Unix-like operating systems with native Bash s
 ## Features:
 
 - **Directory Confirmation:** Prompts the user to confirm they're working in the correct directory before proceeding with any Git operations, enhancing safety and accuracy.
-- **Project Download Option:** Offers the choice to download a project using either the `tiged` (npx tiged command) or `clone` method, facilitating easy project setup from a remote repository.
+- **Project Download Option:** Offers the choice to download a project using either the `tiged` (npx tiged command) or `git clone` method, facilitating easy project setup from a remote repository.
 - **Automatic Repository Creation:** Allows the creation of a new GitHub repository for the current directory. It initializes the repository as private by default, streamlining the process of going from a local project to a remote repository.
 - **`.gitignore` File Management:** Checks for the existence of a `.gitignore` file and offers to create one if it's missing, with a default entry to ignore `node_modules`, helping maintain a clean repository.
 - **Node Modules Installation:** Detects if the `node_modules` directory exists and offers to install dependencies using `npm install` if it doesn't, ensuring project dependencies are up to date.
