@@ -84,7 +84,7 @@ fi
 
 # Check for .gitignore file
 if [ ! -f .gitignore ]; then
-    echo "No .gitignore file found."
+    echo "No .gitignore file found. I've printed the contents of the directory below:"
     ls -a
     echo "-----------------------------------"
     read -p "Would you like to add a .gitignore file? (Yes/No): " add_gitignore
