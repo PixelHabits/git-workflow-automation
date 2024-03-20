@@ -13,6 +13,10 @@ Before you start, ensure you have the following prerequisites installed on your 
 - Git
 - Node.js and npm (if your project requires them)
 - GitHub CLI
+  
+### Operating System Compatibility
+
+This script is designed to run on Unix-like operating systems with native Bash support, such as Linux and macOS. Windows users can run the script through the Windows Subsystem for Linux (WSL)
 
 ## Features:
 
