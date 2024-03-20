@@ -44,9 +44,9 @@ if is_yes "$need_download"; then
 
     if [[ "$download_method" == "tiged" ]]; then
         read -r -p "Please enter the full 'npx tiged' command to download the project: " tig_command
-        eval $tig_command # Using eval to execute the command as it's entered
+        eval "$tig_command" # Using eval to execute the command as it's entered
         # Assuming the last argument is the directory name, which might not always be correct
-        dir_name=$(echo $tig_command | awk '{print $NF}')
+        dir_name=$(echo "$tig_command" | awk '{print $NF}')
         cd "$dir_name" || { echo "Failed to change directory to $dir_name. Does it exist?"; exit 1; }
     elif [[ "$download_method" == "clone" ]]; then
         read -r -p "Please enter the Git repository URL to clone: " git_clone_url
