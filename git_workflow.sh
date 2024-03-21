@@ -193,7 +193,7 @@ stage_and_commit() {
             echo
             echo "Okay, changes committed with message: '$commit_message'"
             echo
-            echo
+            echo "-----------------------------------"
         fi
         echo "Now that we've done a commit here is your updated status and last log entry:"
         echo
