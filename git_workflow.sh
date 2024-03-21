@@ -328,7 +328,8 @@ main() {
     echo
     echo "***********************************"
     echo
-    echo "Workflow complete. Thanks for using Git Workflow Automation"
+    echo "Workflow complete. Thanks for using Git Workflow Automation!"
+    echo
 }
 
 # Execute the main function
