@@ -12,7 +12,7 @@ repo_url="" # Initialize an empty string to hold the repository URL
 confirm_directory() {
     current_dir_name=$(basename "$PWD")
     parent_dir_name=$(basename "$(dirname "$PWD")")
-    read -r -p "Is this the correct directory? (...$parent_dir_name/$current_dir_name) (Yes/No): " response
+    read -r -p "Is this the correct directory? (.../$parent_dir_name/$current_dir_name) (Yes/No): " response
     if is_no "$response"; then
         echo "Please navigate to the correct directory and restart the script."
         exit 1
@@ -24,6 +24,7 @@ download_project() {
     echo "-----------------------------------"
     read -r -p "Do you need to download a project? (Yes/No): " need_download
     if is_yes "$need_download"; then
+        echo
         read -r -p "Would you like to use 'tiged' or 'clone' to download the project? (tiged/clone): " download_method
         case $download_method in
             tiged) download_with_tiged ;;
@@ -40,7 +41,9 @@ download_project() {
 download_with_tiged() {
     echo "-----------------------------------"
     read -r -p "Please enter the full 'npx tiged' command to download the project: " tig_command
+    echo
     echo "Thanks, I'm about to download the project."
+    echo
     confirm_directory
     eval "$tig_command"  # Using eval to execute the command as it's entered
     
@@ -50,6 +53,7 @@ download_with_tiged() {
     cd "$intended_dir" || { echo "Failed to change directory to $intended_dir. Does it exist?"; exit 1; }
     current_dir_name=$(basename "$PWD")
     parent_dir_name=$(basename "$(dirname "$PWD")")
+    echo
     echo "Repository downloaded and I've changed the current directory to the project location."
     echo "-----------------------------------"
 }
@@ -68,6 +72,7 @@ download_with_clone() {
     cd "$repo_name" || { echo "Failed to change directory to $repo_name. Does it exist?"; exit 1; }
     current_dir_name=$(basename "$PWD")
     parent_dir_name=$(basename "$(dirname "$PWD")")
+    echo
     echo "Repository downloaded and I've changed the current directory to the project location."
     echo "-----------------------------------"
 }
@@ -76,6 +81,7 @@ download_with_clone() {
 create_repo() {
     echo "-----------------------------------"
     read -r -p "Do you need to create a GitHub repository? (Yes/No): " need_repo
+    echo
     if is_yes "$need_repo"; then
         confirm_directory
         local repo_name
@@ -84,7 +90,7 @@ create_repo() {
         echo "Current directory name is '$current_dir_name'."
         echo "Creating a private GitHub repository named '$current_dir_name'."
         repo_url=$(gh repo create "$current_dir_name" --private --confirm -y 2>&1 | grep "https://")
-        if [[ $? -ne 0 ]]; then
+        if [[ -z $repo_url ]]; then
             echo "Error creating GitHub repository. Please check if you're logged in with 'gh auth login'"
             exit 1
         fi
@@ -145,7 +151,12 @@ initialize_git() {
     else
         read -r -p "No Git repository found in the current directory. Would you like to initialize one? (Yes/No): " response
         if is_yes "$response"; then
-            git init && echo "Git repository initialized." || { echo "Failed to initialize Git repository."; exit 1; }
+            if git init; then
+                echo "Git repository initialized."
+            else
+            echo "Failed to initialize Git repository."
+            exit 1
+            fi
         else
             echo "Git repository initialization skipped."
         fi
@@ -244,14 +255,23 @@ push_to_github() {
                         echo "Keeping the existing remote origin: $existing_origin_url."
                     fi
                 fi
+                echo
+                echo "Pushing to GitHub"
+                echo
                 git push -u origin main || { echo "Push failed."; exit 1; }
+                echo
+                echo
                 echo "All done, check the repo!"
                 echo "-----------------------------------"
+                echo
                 git remote -v
+                echo
             else
+                echo
                 echo "Review your changes and restart script."
             fi
         else
+            echo
             echo "Review your changes and restart script."
             echo "-----------------------------------"
         fi
@@ -260,7 +280,9 @@ push_to_github() {
 # Presents the capabilities and asks for a starting step
 select_starting_step() {
     echo "Starting Git workflow automation..."
+    echo
     echo "These are the actions I am capable of performing:"
+    echo
     echo "1. Downloading a project"
     echo "2. Creating a new GitHub repository"
     echo "3. Handling .gitignore"
@@ -268,6 +290,8 @@ select_starting_step() {
     echo "5. Initializing Git"
     echo "6. Staging and committing changes"
     echo "7. Pushing to GitHub"
+    echo
+    echo
     echo "Enter a step to start at, or press the Enter key to begin from the start:"
     read -r -p "" starting_step
     if [ -z "$starting_step" ]; then
@@ -289,7 +313,7 @@ main() {
     fi
 
     # Sequentially execute actions based on the starting step
-    for (( step=$starting_step; step<=7; step++ )); do
+    for (( step=starting_step; step<=7; step++ )); do
         case $step in
             1) download_project ;;
             2) create_repo ;;
@@ -301,7 +325,9 @@ main() {
             *) echo "An unexpected error occurred."; exit 1 ;;
         esac
     done
-
+    echo
+    echo "***********************************"
+    echo
     echo "Workflow complete. Thanks for using Git Workflow Automation"
 }
 
