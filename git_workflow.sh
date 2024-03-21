@@ -157,7 +157,8 @@ initialize_git() {
 # Stages and commits changes
 stage_and_commit() {
     echo "-----------------------------------"
-    echo "Here is the current git status"
+    echo "Here is the current git status:"
+    echo
     git status
     echo 
     echo
@@ -183,12 +184,16 @@ stage_and_commit() {
             echo
             echo
             echo "Okay, changes committed with the message: 'Initial Commit'"
+            echo
+            echo
         else
             read -r -p "Enter your commit message: " commit_message
             git commit -m "$commit_message" || { echo "Commit failed."; exit 1; }
             echo
             echo
             echo "Okay, changes committed with message: '$commit_message'"
+            echo
+            echo
         fi
         echo "Now that we've done a commit here is your updated status and last log entry"
         echo
@@ -241,6 +246,7 @@ push_to_github() {
                 fi
                 git push -u origin main || { echo "Push failed."; exit 1; }
                 echo "All done, check the repo!"
+                echo "-----------------------------------"
                 git remote -v
             else
                 echo "Review your changes and restart script."
@@ -296,7 +302,7 @@ main() {
         esac
     done
 
-    echo "Workflow complete."
+    echo "Workflow complete. Thanks for using Git Workflow Automation"
 }
 
 # Execute the main function
