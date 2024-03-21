@@ -185,7 +185,7 @@ stage_and_commit() {
             echo
             echo "Okay, changes committed with the message: 'Initial Commit'"
             echo
-            echo
+            echo "-----------------------------------"
         else
             read -r -p "Enter your commit message: " commit_message
             git commit -m "$commit_message" || { echo "Commit failed."; exit 1; }
@@ -195,7 +195,7 @@ stage_and_commit() {
             echo
             echo
         fi
-        echo "Now that we've done a commit here is your updated status and last log entry"
+        echo "Now that we've done a commit here is your updated status and last log entry:"
         echo
         echo "Git Status:"
         git status
