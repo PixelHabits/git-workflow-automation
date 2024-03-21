@@ -6,6 +6,8 @@ Fun Fact 😄
 
 This very script was used to automate the setup of its own repository. It's a bit like sending a robot back in time to build itself. We've truly come full circle! 🤖🔄😂
 
+If you find this script useful and it makes your Git workflow a bit smoother, I'd deeply appreciate a star (⭐️) on GitHub! It's a simple gesture that goes a long way in supporting creators like myself. Moreover, if you're keen on staying in the loop with this script's evolution and my other projects, hitting that follow button would mean the world to me. Your engagement not only fuels my passion but also shapes the future of this script. Together, let's make Git Workflow Automation even more powerful. Thank you for your support and for considering to follow my journey!
+
 ## Prerequisites
 
 Before you start, ensure you have the following prerequisites installed on your system:
@@ -157,6 +159,8 @@ git pull
 **Tip for macOS users:** To easily find the path of a file or directory, you can drag and drop the file into the Terminal window.
 
 ## Contributing
+
+Loving the script? Show your support by giving it a ⭐️ on GitHub! And if you want to keep up with my latest projects and updates, I'd be thrilled if you followed me here. Your star and follow mean a lot to me—they motivate me to keep creating and improving. Thanks for using Git Workflow Automation, and I look forward to bringing you even more useful tools!
 
 If you'd like to contribute to the development of the script, please follow these steps:
 
