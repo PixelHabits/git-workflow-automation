@@ -105,41 +105,75 @@ create_repo() {
 # Handles .gitignore
 handle_gitignore() {
     echo "-----------------------------------"
-    if [ ! -f .gitignore ]; then
+    local missing_entries=()
+
+    if [ -f ".gitignore" ]; then
+        echo ".gitignore file already present."
+
+
+        grep -qx "node_modules" .gitignore || missing_entries+=("node_modules")
+        grep -qx ".env" .gitignore || missing_entries+=(".env")
+
+
+        if [ ${#missing_entries[@]} -ne 0 ]; then
+            for entry in "${missing_entries[@]}"; do
+                echo "$entry" >> .gitignore
+                echo "$entry added to .gitignore."
+            done
+        else
+            echo "node_modules and .env are already in .gitignore."
+        fi
+    else
         echo "No .gitignore file found. I've printed the contents of the directory for you to check below:"
         echo
         ls -a
         echo
-        echo
         read -r -p "Would you like to add a .gitignore file? (Yes/No): " add_gitignore
         if is_yes "$add_gitignore"; then
             echo "node_modules" > .gitignore
-            echo ".gitignore file created and node_modules added."
+            echo ".env" >> .gitignore
+            echo ".gitignore file created with node_modules and .env added."
         else
             echo "Skipping .gitignore file creation."
         fi
-        echo "-----------------------------------"
-    else
-    echo " .gitignore file already present, skipping creation"
-    echo "-----------------------------------"
     fi
+    echo "-----------------------------------"
 }
 
 # Installs node_modules
 install_node_modules() {
     echo "-----------------------------------"
-    if [ -d "node_modules" ]; then
-    echo "The 'node_modules' directory already exists. Skipping installation."
-    else
-        read -r -p "The 'node_modules' directory does not exist. Would you like to install node_modules? (Yes/No): " install_node
-        if is_yes "$install_node"; then
-            npm install
-            echo
-            echo "node_modules installed."
-        else
-            echo "Skipping node_modules installation."
+    local initial_dir
+    initial_dir=$(pwd)  # Store the initial directory to return later
+    local found_package_json=false
+
+    # Find all directories containing a package.json file
+    for dir in */ ; do
+        if [ -f "${dir}package.json" ]; then
+            echo "Found package.json in ${dir}"
+            found_package_json=true
+            cd "$dir" || continue  # Change to the directory or skip if not accessible
+
+            if [ -d "node_modules" ]; then
+                echo "The 'node_modules' directory already exists in ${dir}. Skipping installation."
+            else
+                read -r -p "The 'node_modules' directory does not exist in ${dir}. Would you like to install node_modules? (Yes/No): " install_node
+                if is_yes "$install_node"; then
+                    npm install
+                    echo "node_modules installed in ${dir}."
+                else
+                    echo "Skipping node_modules installation in ${dir}."
+                fi
+            fi
+
+            cd "$initial_dir" || { echo "Failed to change directory to $initial_dir. Does it exist?"; exit 1; } # Return to the original directory
         fi
+    done
+
+    if [ "$found_package_json" = false ]; then
+        echo "No package.json found in any subdirectories."
     fi
+
     echo "-----------------------------------"
 }
 
