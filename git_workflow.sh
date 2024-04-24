@@ -111,7 +111,7 @@ handle_gitignore() {
         echo ".gitignore file already present."
 
 
-        grep -qx "node_modules" .gitignore || missing_entries+=("node_modules")
+        grep -qx "node_modules/" .gitignore || missing_entries+=("node_modules/")
         grep -qx ".env" .gitignore || missing_entries+=(".env")
 
 
