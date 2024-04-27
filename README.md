@@ -26,17 +26,39 @@ This script is designed to run on Unix-like operating systems with native Bash s
 
 ## Features:
 
-- **Directory Confirmation:** Prompts the user to confirm they're working in the correct directory before proceeding with any Git operations, enhancing safety and accuracy.
-- **Project Download Option:** Offers the choice to download a project using either the `tiged` (npx tiged command) or `git clone` method, facilitating easy project setup from a remote repository.
-- **Automatic Repository Creation:** Allows the creation of a new GitHub repository for the current directory. It initializes the repository as private by default, streamlining the process of going from a local project to a remote repository.
-- **`.gitignore` File Management:** Checks for the existence of a `.gitignore` file and offers to create one if it's missing, with a default entry to ignore `node_modules`, helping maintain a clean repository.
-- **Node Modules Installation:** Detects if the `node_modules` directory exists and offers to install dependencies using `npm install` if it doesn't, ensuring project dependencies are up to date.
-- **Git Initialization Check:** Verifies if the current directory is already initialized as a Git repository, and initializes one if not, ensuring that version control is set up.
-- **Staging and Committing Changes:** Prompts the user to stage all changes and commit them, with options for an "Initial Commit" message or a custom message, facilitating straightforward version control management.
-- **Git Status and Log Overview:** After committing, displays the current Git status and a log of commits, providing a clear overview of the repository's state.
-- **Remote Origin Management:** Checks if a remote origin is set and offers to add or change it, ensuring that the local repository is correctly linked to a remote one. This step includes pushing changes to the remote repository.
-- **Push Validation:** Before pushing, confirms with the user that everything looks good, adding an extra layer of verification to prevent accidental pushes.
-- **Script Exit Points:** Includes multiple exit points based on user decisions or if critical steps fail (e.g., directory change, Git repository initialization), ensuring that the script does not proceed without the required setup.
+- **Selective Starting Point:** Incorporates a menu system that enables the user to choose a starting step within the script, facilitating flexibility in workflow management.
+
+  - Menu Example
+
+    ```sh
+    -----------------------------------
+    Starting Git workflow automation...
+
+    These are the actions I am capable of performing:
+
+    1. Downloading a project
+    2. Creating a new GitHub repository
+    3. Handling .gitignore
+    4. Installing node_modules
+    5. Initializing Git
+    6. Staging and committing changes
+    7. Pushing to GitHub
+
+
+    Enter a step to start at, or press the Enter key to begin from the start:
+
+    ```
+
+- **Directory Confirmation:** Prompts the user to confirm the working directory before initiating any operations, enhancing safety and accuracy. Allows exiting if the directory is incorrect.
+- **Project Download Option:** Offers the choice to download a project using either the `tiged` (npx tiged command) or `git clone` method, facilitating easy project setup from a remote repository. This option is presented if a project download step is selected.
+- **Automatic Repository Creation:** Allows the creation of a new GitHub remote repository for the current directory. It initializes the repository as private by default, streamlining the process of going from a local project to a remote repository. This feature includes error handling for creation failures and authentication issues.
+- **`.gitignore` File Management:** Automatically checks for the presence of a `.gitignore` file, offering to create one with a default entries to ignore `node_modules` and `.env` if missing. This helps in maintaining a clean repository by ignoring unnecessary or sensitive files.
+- **Intelligent Dependency Installation:** Detects the presence of a `package.json` file in the project directory and sub directories to determine if dependency installation is necessary. If `node_modules` is missing, it prompts the user to install dependencies using `npm install`, ensuring the project dependencies are up to date.
+- **Git Repository Initialization Check:** Verifies if the current directory is already initialized as a Git repository and offers to initialize one if absent, ensuring that version control setup is in place right from the start.
+- **Staging and Committing Changes:** Provides an interactive interface for staging all changes, with options for a default "Initial Commit" or a custom commit message. Also displays the current Git status and a log of commits after committing, providing a clear overview of the repository's state.
+- **Remote Origin Management:** Checks for the existence of a remote origin and offers to add or change it, ensuring that the local repository is correctly linked to a remote one. This step includes the option to push changes to the newly set remote repository, ensuring correct linkage.
+- **Push Validation and Execution:** Before pushing, confirms with the user that everything looks good by displaying the most recent `git status` immediately prior to push, adding an extra layer of verification to prevent accidental pushes. It manages pushing to GitHub, including setting up the remote origin if not already done.
+- **Script Exit Points:** Includes multiple exit points based on user decisions or if critical steps fail (e.g., directory change, Git repository initialization), ensuring that the script does not proceed without the required setup and validations.
 
 ## Usage:
 
@@ -48,9 +70,11 @@ This script is designed to improve the efficiency of Git workflows, making it ea
 
 ## Installation
 
-### Windows Subsystem for Linux (WSL)
+### PreRequisites Installation
 
-#### Step 1: Install the GitHub CLI
+#### Windows Subsystem for Linux (WSL)
+
+##### Step 1: Install the GitHub CLI
 
 First, install the GitHub CLI (`gh`) if it's not already installed on your machine. Execute the following commands in your terminal:
 
@@ -61,7 +85,7 @@ sudo apt update
 sudo apt install gh
 ```
 
-#### Step 2: Authenticate with GitHub
+##### Step 2: Authenticate with GitHub
 
 Authenticate with your GitHub account using `gh`:
 
@@ -71,21 +95,21 @@ gh auth login
 
 Follow the prompts to select your preferred authentication method and set the default git protocol.
 
-### macOS Instructions
+#### macOS Instructions
 
-#### Step 1: Install Homebrew (if not already installed)
+##### Step 1: Install Homebrew (if not already installed)
 
 ```sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-#### Step 2: Install GitHub CLI
+##### Step 2: Install GitHub CLI
 
 ```sh
 brew install gh
 ```
 
-#### Step 3: Authenticate with GitHub
+##### Step 3: Authenticate with GitHub
 
 ```sh
 gh auth login
@@ -95,7 +119,7 @@ Follow the prompts to select your preferred authentication method and set the de
 
 ### General Instructions for Both WSL and macOS
 
-#### Step 3: Obtain a Copy of the Repository
+#### Step 1: Obtain a Copy of the Repository
 
 To keep your local copy of the project easily updatable as changes are made, we recommend using `git clone` to download the repository:
 
@@ -105,19 +129,7 @@ git clone https://github.com/PixelHabits/git-workflow-automation.git
 
 This command will create a new directory named `git-workflow-automation` that contains the entire project, including the `git_workflow.sh` script.
 
-#### Step 4: Ensure Script Executability
-
-After cloning the repository, ensure the `git_workflow.sh` script is executable by updating its permissions:
-
-```sh
-chmod +x /path/to/git_workflow.sh
-```
-
-**Tip for macOS users:** To easily find the path of a file or directory, you can drag and drop the file into the Terminal window.
-
-**Reminder:** Replace `/path/to/git_workflow.sh` with the actual path to the script, which would typically be within the `git-workflow-automation` directory you've just cloned.
-
-#### Step 5: Add an Alias for the Script
+#### Step 2: Add an Alias for the Script
 
 To easily run the `git_workflow.sh` script from anywhere in your terminal, add an alias to your terminal's profile file:
 
@@ -145,7 +157,7 @@ source ~/.zshrc
 
 **Note:** The alias `gitwf` in the command above can be changed to whatever you prefer, as long as it does not conflict with existing terminal commands.
 
-#### Updating Your Local Copy
+## Updating Your Local Copy
 
 To update your local copy with the latest changes from the repository, navigate to the directory that contains the `git_workflow.sh` script and execute:
 
