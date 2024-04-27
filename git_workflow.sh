@@ -147,31 +147,48 @@ install_node_modules() {
     initial_dir=$(pwd)  # Store the initial directory to return later
     local found_package_json=false
 
-    # Find all directories containing a package.json file
-    for dir in */ ; do
-        if [ -f "${dir}package.json" ]; then
-            echo "Found package.json in ${dir}"
-            found_package_json=true
-            cd "$dir" || continue  # Change to the directory or skip if not accessible
-
-            if [ -d "node_modules" ]; then
-                echo "The 'node_modules' directory already exists in ${dir}. Skipping installation."
+    # Check if package.json exists in the current directory
+    if [ -f "${initial_dir}/package.json" ]; then
+        echo "Found package.json in the current directory."
+        found_package_json=true
+        if [ -d "${initial_dir}/node_modules" ]; then
+            echo "The 'node_modules' directory already exists in the current directory. Skipping installation."
+        else
+            read -r -p "The 'node_modules' directory does not exist in the current directory. Would you like to install node_modules? (Yes/No): " install_node
+            if is_yes "$install_node"; then
+                npm install
+                echo "node_modules installed in the current directory."
             else
-                read -r -p "The 'node_modules' directory does not exist in ${dir}. Would you like to install node_modules? (Yes/No): " install_node
-                if is_yes "$install_node"; then
-                    npm install
-                    echo "node_modules installed in ${dir}."
-                else
-                    echo "Skipping node_modules installation in ${dir}."
-                fi
+                echo "Skipping node_modules installation in the current directory."
             fi
-
-            cd "$initial_dir" || { echo "Failed to change directory to $initial_dir. Does it exist?"; exit 1; } # Return to the original directory
         fi
-    done
+    else
+        # Find all directories containing a package.json file
+        for dir in */ ; do
+            if [ -f "${dir}package.json" ]; then
+                echo "Found package.json in ${dir}"
+                found_package_json=true
+                cd "$dir" || continue  # Change to the directory or skip if not accessible
+
+                if [ -d "node_modules" ]; then
+                    echo "The 'node_modules' directory already exists in ${dir}. Skipping installation."
+                else
+                    read -r -p "The 'node_modules' directory does not exist in ${dir}. Would you like to install node_modules? (Yes/No): " install_node
+                    if is_yes "$install_node"; then
+                        npm install
+                        echo "node_modules installed in ${dir}."
+                    else
+                        echo "Skipping node_modules installation in ${dir}."
+                    fi
+                fi
+
+                cd "$initial_dir" || { echo "Failed to change directory to $initial_dir. Does it exist?"; exit 1; } # Return to the original directory
+            fi
+        done
+    fi
 
     if [ "$found_package_json" = false ]; then
-        echo "No package.json found in any subdirectories."
+        echo "No package.json found in any directory."
     fi
 
     echo "-----------------------------------"
