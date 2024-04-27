@@ -111,17 +111,31 @@ handle_gitignore() {
         echo ".gitignore file already present."
 
 
-        grep -qx "node_modules/" .gitignore || missing_entries+=("node_modules/")
-        grep -qx ".env" .gitignore || missing_entries+=(".env")
+        grep -qx "node_modules" .gitignore || missing_entries+=("node_modules")
+        grep -qx "*.env" .gitignore || missing_entries+=("*.env")
 
 
         if [ ${#missing_entries[@]} -ne 0 ]; then
-            for entry in "${missing_entries[@]}"; do
-                echo "$entry" >> .gitignore
-                echo "$entry added to .gitignore."
-            done
+            echo
+            echo "BUT....gitignore file missing entries for $(IFS=', '; echo "${missing_entries[*]}")"
+            echo
+            echo "I've printed the contents of the directory for you to check below:"
+            echo
+            ls -a
+            echo
+            read -r -p "Would you like to add missing entry/entries: $(IFS=', '; echo "${missing_entries[*]}")? (Yes/No): " add_entries
+            if is_yes "$add_entries"; then
+                echo "" >> .gitignore  # Append an empty line for safety
+                for entry in "${missing_entries[@]}"; do
+                    echo "$entry" >> .gitignore
+                    echo "$entry added to .gitignore."
+                done
+                echo "entries have been added to .gitignore."
+            else
+                echo "Skipping .gitignore entries."
+            fi
         else
-            echo "node_modules and .env are already in .gitignore."
+            echo "node_modules and *.env are already in .gitignore."
         fi
     else
         echo "No .gitignore file found. I've printed the contents of the directory for you to check below:"
