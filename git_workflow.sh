@@ -257,32 +257,46 @@ stage_and_commit() {
         echo
         if is_yes "$initial_commit"; then
             git commit -m "Initial Commit" || { echo "Commit failed."; exit 1; }
-            echo
-            echo
             echo "Okay, changes committed with the message: 'Initial Commit'"
-            echo
             echo "-----------------------------------"
         else
-            read -r -p "Enter your commit message: " commit_message
-            git commit -m "$commit_message" || { echo "Commit failed."; exit 1; }
-            echo
-            echo
-            echo "Okay, changes committed with message: '$commit_message'"
-            echo
+            read -r -p "Do you want to use multiline commits? (Yes/No): " multiline
+            if is_yes "$multiline"; then
+                commit_command="git commit"
+                first_message_added=false
+                while true; do
+                    read -r -p "Enter a message part or press enter to commit: " part
+                    if [[ -z $part ]]; then
+                        if [[ "$first_message_added" = true ]]; then
+                            break
+                        else
+                            echo "No commit message entered. Please enter at least one message part."
+                            continue
+                        fi
+                    fi
+                    commit_command+=" -m \"$part\""
+                    first_message_added=true
+                done
+                eval "$commit_command" || { echo "Commit failed."; exit 1; }
+                echo "Okay, changes committed with command: $commit_command"
+            else
+                read -r -p "Enter your commit message: " commit_message
+                git commit -m "$commit_message" || { echo "Commit failed."; exit 1; }
+                echo "Okay, changes committed with message: '$commit_message'"
+            fi
             echo "-----------------------------------"
         fi
         echo "Now that we've done a commit here is your updated status and last log entry:"
-        echo
         echo "Git Status:"
         git status
-        echo
         echo "Git Log Entry:"
         git log --oneline --graph --decorate --all
     else
-    echo "Skipping commit."
+        echo "Skipping commit."
     fi
     echo "-----------------------------------"
 }
+
 
 # Pushes to GitHub
 push_to_github() {
