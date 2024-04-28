@@ -186,8 +186,12 @@ If you'd like to contribute to the development of the script, please follow thes
 
 This project is licensed under the GNU General Public License v3.0 - see the [GPLv3 license](https://www.gnu.org/licenses/gpl-3.0.en.html) for details. The GNU GPLv3 is a free, copyleft license for software and other kinds of works, offering the freedom to use, modify, and distribute, ensuring that all modifications and derived works are also available under the same license.
 
-## Contact
+## Contributors
 
-[PixelHabits](https://github.com/PixelHabits)
+<a href="https://github.com/PixelHabits/git-workflow-automation/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=PixelHabits/git-workflow-automation" />
+</a>
+
+Made with [contrib.rocks](https://contrib.rocks).
 
 Project Link: [https://github.com/PixelHabits/git-workflow-automation](https://github.com/PixelHabits/git-workflow-automation)
