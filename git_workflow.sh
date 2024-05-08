@@ -302,15 +302,18 @@ stage_and_commit() {
 push_to_github() {
     echo "-----------------------------------"
     read -r -p "Push changes to GitHub? (Yes/No): " push
-        echo
+    echo
         if is_yes "$push"; then
             echo
             echo "Git Status:"
+            echo
             git status
             echo
             read -r -p "Does everything above look good, I'm about to try pushing to the GitHub Repo? (Yes/No): " looks_good
             if is_yes "$looks_good"; then
             echo
+            # Determine current branch or use 'main' if not on any branch
+            current_branch=$(git symbolic-ref --short -q HEAD || echo "main")
                 if ! git remote get-url origin &> /dev/null; then
                     # This condition now implies either a new project or a cloned repo without an origin
                     if [ -n "$repo_url" ]; then
@@ -335,9 +338,9 @@ push_to_github() {
                     fi
                 fi
                 echo
-                echo "Pushing to GitHub"
+                echo "Pushing to GitHub on branch '$current_branch'"
                 echo
-                git push -u origin main || { echo "Push failed."; exit 1; }
+                git push -u origin "$current_branch" || { echo "Push failed."; exit 1; }
                 echo
                 echo
                 echo "All done, check the repo!"
